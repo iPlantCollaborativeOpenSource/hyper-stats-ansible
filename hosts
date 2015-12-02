@@ -1,0 +1,6 @@
+# Address of monitoring server
+[monitoring_server]
+127.0.0.1
+
+# List of compute node clients
+[clients]

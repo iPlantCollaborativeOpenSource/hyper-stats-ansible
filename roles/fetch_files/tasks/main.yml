@@ -1,0 +1,12 @@
+---
+# Fetch files from https://github.com/iPlantCollaborativeOpenSource/hyper-stats.git
+- name: Install git
+  apt: name={{ item }} state=present
+  with_items:
+    - git
+
+- name: Clone hyper-stats files
+  git: 
+    repo: "https://github.com/iPlantCollaborativeOpenSource/hyper-stats.git"
+    dest: "{{ hyper_stats_dir }}"
+    depth: 1

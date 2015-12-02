@@ -1,0 +1,16 @@
+---
+# Setup monitoring server for hyper-stats service, see README
+
+# Source facts about clients, required by nagios_monitor
+- hosts: clients
+  tasks: {}
+
+# Install monitoring server on localhost
+- hosts: monitoring_server
+  connection: local
+  vars:
+    hyper_stats_dir : "~/hyper-stats"
+  roles:
+    - fetch_files
+    - make_install_check_nrpe
+    - nagios_monitor

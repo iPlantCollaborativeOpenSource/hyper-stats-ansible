@@ -1,0 +1,4 @@
+[Nagios]
+title=Nagios monitoring
+description=Nagios monitoring
+ports=5666/tcp

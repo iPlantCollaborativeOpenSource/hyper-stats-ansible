@@ -1,0 +1,10 @@
+---
+# Each host in clients added as client for hyper-stats, see README
+- hosts: clients
+  vars: 
+    monitoring_server: # REPLACE WITH PUBLIC IP #
+    hyper_stats_dir : "~/hyper-stats"
+  roles:
+    - fetch_files
+    - nagios_client
+    - make_install_nrpe

@@ -1,0 +1,53 @@
+---
+- name: Install apt packages
+  apt: name={{ item }} state=present
+  with_items:
+    - python-setuptools
+    - python-libvirt
+
+- name: Install pip
+  easy_install: 
+    name: pip
+
+- name: Install python untangle
+  pip: 
+    name: untangle
+
+- name: Add nrpe command definition
+  copy: 
+    src: '{{ hyper_stats_dir }}/nagios/virt-nrpe-cmd.cfg'
+    dest: /etc/nagios/nrpe.d/virt-nrpe-cmd.cfg
+
+- name: Add libvirt plugin
+  copy: 
+    src: '{{ hyper_stats_dir }}/libvirt/virt-stats.py'
+    dest: /usr/lib/nagios/plugins/virt-stats.py
+
+- name: Configure nrpe allowed hosts
+  lineinfile: 
+    dest: /etc/nagios/nrpe.cfg
+    regexp: '^allowed_hosts=(?!{{ monitoring_server }})(.*)$' 
+    line: 'allowed_hosts={{ monitoring_server }},\1'
+    backrefs: yes
+
+- name: Allow sudo for libvirt plugin
+  lineinfile: 
+    dest: /etc/sudoers 
+    line: 'nagios ALL=(ALL) NOPASSWD: /usr/lib/nagios/plugins/virt-stats.py'
+    validate: 'visudo -cf %s'
+
+- name: Restart nrpe
+  service: 
+    name: nagios-nrpe-server
+    state: restarted
+
+- name: Add nagios application to ufw
+  copy: 
+    src: '../files/nagios'
+    dest: '/etc/ufw/applications.d'
+
+- name: Enable firewall for check_nrpe
+  ufw: 
+      rule: allow
+      name: Nagios 
+      src: '{{ monitoring_server }}'

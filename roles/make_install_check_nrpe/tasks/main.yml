@@ -1,0 +1,5 @@
+- name: Install check_nrpe binary
+  copy:
+    dest: '/usr/lib/nagios/plugins/'
+    src: '{{ NRPE_CLONE_DIR }}/src/check_nrpe'
+    force: yes

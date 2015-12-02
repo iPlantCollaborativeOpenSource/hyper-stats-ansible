@@ -1,0 +1,22 @@
+# Install an nrpe that can send up to 16kb payload
+- name: Install git
+  apt: name={{ item }} state=present
+  with_items:
+    - git
+
+- name: Clone iplant fork
+  git: 
+    repo: https://github.com/iPlantCollaborativeOpenSource/nrpe.git 
+    dest: "{{ NRPE_CLONE_DIR }}"
+    depth: 1
+
+- name: Install nrpe requirement
+  apt: name={{ item }} state=present
+  with_items:
+    - libssl-dev
+
+- name: Configure nrpe
+  command: creates='{{ NRPE_CLONE_DIR }}/src/Makefile' chdir='{{ NRPE_CLONE_DIR }}' ./configure --with-ssl=/usr/bin/openssl --with-ssl-lib=/usr/lib/x86_64-linux-gnu
+
+- name: Make all nrpe
+  command: creates='{{ NRPE_CLONE_DIR }}/src/nrpe' chdir='{{ NRPE_CLONE_DIR }}' make all

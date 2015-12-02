@@ -1,0 +1,21 @@
+---
+# Note: This task must be run after facts have been gathered of hosts to be
+# monitored
+#
+- name: Include virt-stats nrpe command definition
+  copy: 
+    src: "{{ hyper_stats_dir }}/nagios/virt-stats.cfg"
+    dest: /etc/nagios-plugins/config/virt-stats.cfg
+
+- name: Include virt-stats generic service definition 
+  copy: 
+    src: "{{ hyper_stats_dir }}/nagios/virt-generic-service.cfg"
+    dest: /etc/nagios3/conf.d/virt-generic-service.cfg
+
+- name: Set nagios host definitions
+  template: src=../templates/virt-nrpe-cmd.cfg.j2 dest=/etc/nagios3/conf.d/virt-hosts.cfg
+
+- name: Restart nagios
+  service: 
+    name: nagios3
+    state: restarted

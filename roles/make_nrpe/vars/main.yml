@@ -1,0 +1,3 @@
+---
+# vars file for make_nrpe
+NRPE_CLONE_DIR : "~/nrpe"

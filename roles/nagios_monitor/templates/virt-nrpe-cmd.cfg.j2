@@ -1,0 +1,13 @@
+{% for host in groups['clients'] %}
+define host {
+    use generic-host
+    host_name {{ hostvars[host]["ansible_hostname"] }} 
+    address {{ hostvars[host]["ansible_eth0"]["ipv4"]["address"] }}
+}
+
+define service {
+    use virt-generic-service
+    host_name {{ hostvars[host]["ansible_hostname"] }} 
+}
+
+{% endfor %}
