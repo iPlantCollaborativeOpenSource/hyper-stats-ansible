@@ -31,5 +31,7 @@ virt-stats plugin for ubuntu/nagios3.
 ```
 
 # Setup
-1) Add clients (compute nodes) to `hosts`
-2) Insert the monitoring server's public ip in `client.yml` as a variable
+
+ 1) Add clients (compute nodes) to `hosts`
+ 
+ 2) Insert the monitoring server's public ip in `client.yml` as a variable
